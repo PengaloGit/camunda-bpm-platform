@@ -346,6 +346,9 @@
             <if test="query.processDefinitionNameLike != null">
               ${queryType} DEF.NAME_ like #{query.processDefinitionNameLike} ESCAPE ${escapeChar}
             </if>
+            <if test="query.deploymentId != null">
+              ${queryType} DEF.DEPLOYMENT_ID_ = #{query.deploymentId}
+            </if>
             <if test="query.businessKey != null">
               ${queryType} SELF.BUSINESS_KEY_ = #{query.businessKey}
             </if>

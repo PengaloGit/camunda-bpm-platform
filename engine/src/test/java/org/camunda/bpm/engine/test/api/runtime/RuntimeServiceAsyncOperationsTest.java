@@ -229,7 +229,7 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
     // given
     List<String> processIds = startTestProcesses(2);
     ProcessInstanceQuery processInstanceQuery = runtimeService
-        .createProcessInstanceQuery().processInstanceIds(new HashSet<String>(processIds));
+        .createProcessInstanceQuery().processInstanceIds(new HashSet<>(processIds));
 
     // when
     Batch batch = runtimeService.deleteProcessInstancesAsync(null, processInstanceQuery, TESTING_INSTANCE_DELETE);
@@ -250,7 +250,7 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
     // given
     List<String> processIds = startTestProcesses(2);
     ProcessInstanceQuery processInstanceQuery = runtimeService
-        .createProcessInstanceQuery().processInstanceIds(new HashSet<String>(processIds));
+        .createProcessInstanceQuery().processInstanceIds(new HashSet<>(processIds));
 
     // when
     Batch batch = runtimeService.deleteProcessInstancesAsync(processInstanceQuery, TESTING_INSTANCE_DELETE);
@@ -271,7 +271,7 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
     // given
     List<String> processIds = startTestProcesses(2);
     ProcessInstanceQuery processInstanceQuery = runtimeService
-        .createProcessInstanceQuery().processInstanceIds(new HashSet<String>(processIds));
+        .createProcessInstanceQuery().processInstanceIds(new HashSet<>(processIds));
 
     // when
     Batch batch = runtimeService.deleteProcessInstancesAsync(null, processInstanceQuery, null);
@@ -559,7 +559,7 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
   }
 
   private List<String> createProcessInstances(ProcessDefinition sourceDefinition1, ProcessDefinition sourceDefinition2, int instanceCountDef1, int instanceCountDef2) {
-    List<String> processInstanceIds = new ArrayList<String>();
+    List<String> processInstanceIds = new ArrayList<>();
     for (int i = 0; i < instanceCountDef1; i++) {
       ProcessInstance processInstance1 = runtimeService.startProcessInstanceById(sourceDefinition1.getId());
       processInstanceIds.add(processInstance1.getId());
@@ -573,21 +573,11 @@ public class RuntimeServiceAsyncOperationsTest extends AbstractAsyncOperationsTe
 
   private List<String> getProcessInstanceIdsByDeploymentId(final String deploymentId) {
     List<ProcessInstance> processInstances = runtimeService.createProcessInstanceQuery().deploymentId(deploymentId).list();
-    List<String> processInstanceIds = new ArrayList<String>();
+    List<String> processInstanceIds = new ArrayList<>();
     for (ProcessInstance processInstance : processInstances) {
       processInstanceIds.add(processInstance.getId());
     }
     return processInstanceIds;
-  }
-
-  private List<String> getJobIdsByDeployment(List<Job> jobs, String deploymentId) {
-    List<String> jobIdsForDeployment = new LinkedList<String>();
-    for (int i = 0; i < jobs.size(); i++) {
-      if (jobs.get(i).getDeploymentId().equals(deploymentId)) {
-        jobIdsForDeployment.add(jobs.get(i).getId());
-      }
-    }
-    return jobIdsForDeployment;
   }
 
   private void createAndExecuteSeedJobs(String seedJobDefinitionId, int expectedSeedJobsCount) {

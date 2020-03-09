@@ -51,6 +51,7 @@ public class HistoricProcessInstanceQueryImpl extends AbstractVariableQueryImpl<
   protected String processDefinitionId;
   protected String processDefinitionName;
   protected String processDefinitionNameLike;
+  protected String deploymentId;
   protected String businessKey;
   protected String businessKeyLike;
   protected boolean finished = false;
@@ -131,6 +132,11 @@ public class HistoricProcessInstanceQueryImpl extends AbstractVariableQueryImpl<
 
   public HistoricProcessInstanceQuery processDefinitionNameLike(String nameLike) {
     this.processDefinitionNameLike = nameLike;
+    return this;
+  }
+
+  public HistoricProcessInstanceQuery deploymentId(String deploymentId) {
+    this.deploymentId = deploymentId;
     return this;
   }
 
@@ -483,6 +489,10 @@ public class HistoricProcessInstanceQueryImpl extends AbstractVariableQueryImpl<
 
   public String getProcessDefinitionNameLike() {
     return processDefinitionNameLike;
+  }
+
+  public String getDeploymentId() {
+    return deploymentId;
   }
 
   public String getProcessInstanceId() {

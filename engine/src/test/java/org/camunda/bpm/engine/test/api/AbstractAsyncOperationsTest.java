@@ -29,6 +29,7 @@ import org.junit.Before;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertFalse;
@@ -55,6 +56,10 @@ public abstract class AbstractAsyncOperationsTest {
     runtimeService = engineRule.getRuntimeService();
     managementService = engineRule.getManagementService();
     historyService = engineRule.getHistoryService();
+  }
+
+  protected List<String> getJobIdsByDeployment(List<Job> jobs, String deploymentId) {
+    return jobs.stream().filter(j -> deploymentId.equals(j.getDeploymentId())).map(Job::getId).collect(Collectors.toList());
   }
 
   protected void executeSeedJob(Batch batch) {

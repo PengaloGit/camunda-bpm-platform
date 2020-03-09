@@ -18,6 +18,7 @@ package org.camunda.bpm.engine.impl.batch.deletion;
 
 import org.camunda.bpm.engine.HistoryService;
 import org.camunda.bpm.engine.batch.Batch;
+import org.camunda.bpm.engine.impl.HistoricProcessInstanceQueryImpl;
 import org.camunda.bpm.engine.impl.batch.AbstractBatchJobHandler;
 import org.camunda.bpm.engine.impl.batch.BatchConfiguration;
 import org.camunda.bpm.engine.impl.batch.BatchJobConfiguration;
@@ -28,7 +29,7 @@ import org.camunda.bpm.engine.impl.jobexecutor.JobDeclaration;
 import org.camunda.bpm.engine.impl.persistence.entity.ByteArrayEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.ExecutionEntity;
 import org.camunda.bpm.engine.impl.persistence.entity.MessageEntity;
-
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -81,6 +82,21 @@ public class DeleteHistoricProcessInstancesJobHandler extends AbstractBatchJobHa
     }
 
     commandContext.getByteArrayManager().delete(configurationEntity);
+  }
+
+  @Override
+  protected List<String> getDeploymentIds(final CommandContext commandContext, List<String> processIds) {
+    return commandContext.runWithoutAuthorization(() ->
+      commandContext.getDeploymentManager().findDeploymentIdsByHistoricProcessInstances(processIds));
+  }
+
+  @Override
+  protected List<String> getProcessIdsPerDeployment(final CommandContext commandContext, List<String> processIds, String deploymentId) {
+    return commandContext.runWithoutAuthorization(() -> {
+      HistoricProcessInstanceQueryImpl instancesQuery = new HistoricProcessInstanceQueryImpl();
+      instancesQuery.processInstanceIds(new HashSet<>(processIds)).deploymentId(deploymentId);
+      return commandContext.getHistoricProcessInstanceManager().findHistoricProcessInstanceIds(instancesQuery);
+    });
   }
 
 }

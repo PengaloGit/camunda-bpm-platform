@@ -256,6 +256,11 @@ public class DeploymentManager extends AbstractManager {
     return getDbEntityManager().selectList("selectDeploymentIdsByProcessInstances", processInstanceIds);
   }
 
+  @SuppressWarnings("unchecked")
+  public List<String> findDeploymentIdsByHistoricProcessInstances(List<String> processInstanceIds) {
+    return getDbEntityManager().selectList("selectDeploymentIdsByHistoricProcessInstances", processInstanceIds);
+  }
+
   @Override
   public void close() {
   }
